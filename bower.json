@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "description": "",
+  "authors": [
+    "pavel-zhuravlyov <pavlozhuravlyov@gmail.com>"
+  ],
+  "dependencies": {
+    "angular": "1.5.x",
+    "jquery": "3.1.0",
+    "bootstrap": "3.3.x",
+    "ui-router": "0.3.1",
+    "ng-token-auth": "*"
+  },
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

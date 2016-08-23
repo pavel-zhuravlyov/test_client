@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+  <meta charset="utf-8">
+  <title>Title</title>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/ng-token-auth/dist/ng-token-auth.min.js"></script>
+  <script src="../bower_components/ui-router/release/angular-ui-router.min.js"></script>
+  <script src="app.js"></script>
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">WebSiteName</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="#">Item 1</a></li>
+        <li><a href="#">Item 2</a></li>
+        <li><a href="#">Item 3</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" ng-controller="analyserController">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <form ng-submit="analyse()">
+              <div class="form-group">
+                <label for="first_dataset">First dataset:</label>
+                <textarea rows="5" class="form-control" id="first_dataset" ng-model="first_dataset"></textarea>
+                <br>
+                <input type="submit" class="btn btn-default" value="Analyse" />
+              </div>
+            </form>
+          </div>
+
+          <div class="col-md-4">
+            <form ng-submit="correlation()">
+              <div class="form-group">
+                <label for="second_dataset">Second dataset:</label>
+                <textarea rows="5" class="form-control" id="second_dataset" ng-model="second_dataset"></textarea>
+                <br>
+                <input type="submit" class="btn btn-default" value="Correlation" />
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="result-block text-center">
+          {{result}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
