@@ -1,9 +1,34 @@
 'use strict';
 
-var myApp = angular.module("myApp", ['myControllers'])
+var myApp = angular.module('myApp', ['ng-token-auth', 'myControllers']);
+
+myApp.config(function($authProvider) {
+    $authProvider.configure({
+        apiUrl: 'http://localhost:3000'
+    });
+});
+
+
 var myControllers = angular.module('myControllers', []);
 
-myControllers.controller("analyserController", function($scope, $http) {
+myControllers.controller('authController', function($scope, $auth) {
+    $scope.handleLoginBtnClick = function() {
+        $auth.submitLogin($scope.loginForm)
+            .then(function(response) {
+            })
+            .catch(function(response) {});
+    };
+
+    $scope.handleSignOutBtnClick = function() {
+      $auth.signOut()
+        .then(function(resp) {
+        })
+        .catch(function(resp) {
+        });
+    };
+});
+
+myControllers.controller('analyserController', function($scope, $http, $auth) {
     $scope.analyse = function() {
         var dataset = $scope.first_dataset.split(',').map(Number);
         $http({
