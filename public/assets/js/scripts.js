@@ -30736,10 +30736,11 @@ angular.module("ivpusic.cookie",["ipCookie"]),angular.module("ipCookie",["ng"]).
 a.get("$state.runtime").autoinject&&a.get("$state")}]),w.$inject=[],b.module("ui.router.state").provider("$view",w),b.module("ui.router.state").provider("$uiViewScroll",x),y.$inject=["$state","$injector","$uiViewScroll","$interpolate","$q"],z.$inject=["$compile","$controller","$state","$interpolate"],b.module("ui.router.state").directive("uiView",y),b.module("ui.router.state").directive("uiView",z),G.$inject=["$state","$timeout"],H.$inject=["$state","$timeout"],I.$inject=["$state","$stateParams","$interpolate"],b.module("ui.router.state").directive("uiSref",G).directive("uiSrefActive",I).directive("uiSrefActiveEq",I).directive("uiState",H),J.$inject=["$state"],K.$inject=["$state"],b.module("ui.router.state").filter("isState",J).filter("includedByState",K)}(window,window.angular);
 'use strict';
 
-angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
+var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
     .config(function($authProvider, $stateProvider, $urlRouterProvider) {
         $authProvider.configure({
-            apiUrl: 'http://localhost:3000/'
+            apiUrl: 'http://localhost:3000/',
+
         });
 
         $urlRouterProvider.otherwise('/');
@@ -30784,43 +30785,56 @@ angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServi
             $state.go('login');
             return event.preventDefault();
         });
+    })
+    .directive('updateModelOnChange', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                element.bind('change', function () {
+                    scope.readFileTo(attrs.updateModelOnChange);
+                });
+            }
+        };
     });
 
 'use strict';
 
 angular.module('myControllers', [])
-    .controller('authController', function($scope) {
-        $scope.handleLoginBtnClick = function() {
-            $auth.submitLogin($scope.loginForm)
-                .then(function(resp) {})
-                .catch(function(resp) {
-                    $scope.error = 'Invalid login or password!';
-                });
+    .controller('authController', function($scope, $auth) {
+        $scope.handleLoginBtnClick = function(loginForm) {
+            $auth.submitLogin(loginForm);
         };
 
-        $scope.handleRegBtnClick = function() {
-            $auth.submitRegistration($scope.registrationForm)
-                .then(function(resp) {})
-                .catch(function(resp) {});
+        $scope.handleRegBtnClick = function(registrationForm) {
+            $auth.submitRegistration(registrationForm);
         };
 
         $scope.handleSignOutBtnClick = function() {
-            $auth.signOut()
-                .then(function(resp) {})
-                .catch(function(resp) {});
+            $auth.signOut();
         };
     })
     .controller('analyserController', function($scope, AnalyserService) {
+        $scope.readFileTo = function(model) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                $scope.$apply(function() {
+                    $scope[model] = reader.result;
+                });
+            };
+            reader.readAsText(event.target.files[0]);
+        };
+
         $scope.analyse = function() {
-            AnalyserService.analyse($scope.first_dataset.split(',').map(Number))
+            AnalyserService.analyse($scope.first_dataset.match(/\d+/g).map(Number))
                 .then(function(result) {
                     $scope.result = result;
                 });
         };
 
         $scope.correlation = function() {
-            AnalyserService.correlation($scope.first_dataset.split(',').map(Number),
-                                        $scope.second_dataset.split(',').map(Number))
+            AnalyserService.correlation(
+                    $scope.first_dataset.match(/\d+/g).map(Number),
+                    $scope.second_dataset.match(/\d+/g).map(Number))
                 .then(function(result) {
                     $scope.result = result;
                 });

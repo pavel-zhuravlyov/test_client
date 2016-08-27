@@ -20,7 +20,7 @@
         <li><a href="#">{{user.email}}</a></li>
         <li ng-show="!user.signedIn"><a href="#" ui-sref="login">Sign in</a></li>
         <li ng-show="!user.signedIn"><a href="#" ui-sref="register">Sign up</a></li>
-        <li ng-show="user.signedIn"><a href="#" ng-click="signOut()">Sign out</a></li>
+        <li ng-show="user.signedIn"><a href="#" ng-click="handleSignOutBtnClick()">Sign out</a></li>
       </ul>
     </div>
   </nav>

@@ -1,38 +1,41 @@
 'use strict';
 
 angular.module('myControllers', [])
-    .controller('authController', function($scope) {
-        $scope.handleLoginBtnClick = function() {
-            $auth.submitLogin($scope.loginForm)
-                .then(function(resp) {})
-                .catch(function(resp) {
-                    $scope.error = 'Invalid login or password!';
-                });
+    .controller('authController', function($scope, $auth) {
+        $scope.handleLoginBtnClick = function(loginForm) {
+            $auth.submitLogin(loginForm);
         };
 
-        $scope.handleRegBtnClick = function() {
-            $auth.submitRegistration($scope.registrationForm)
-                .then(function(resp) {})
-                .catch(function(resp) {});
+        $scope.handleRegBtnClick = function(registrationForm) {
+            $auth.submitRegistration(registrationForm);
         };
 
         $scope.handleSignOutBtnClick = function() {
-            $auth.signOut()
-                .then(function(resp) {})
-                .catch(function(resp) {});
+            $auth.signOut();
         };
     })
     .controller('analyserController', function($scope, AnalyserService) {
+        $scope.readFileTo = function(model) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                $scope.$apply(function() {
+                    $scope[model] = reader.result;
+                });
+            };
+            reader.readAsText(event.target.files[0]);
+        };
+
         $scope.analyse = function() {
-            AnalyserService.analyse($scope.first_dataset.split(',').map(Number))
+            AnalyserService.analyse($scope.first_dataset.match(/\d+/g).map(Number))
                 .then(function(result) {
                     $scope.result = result;
                 });
         };
 
         $scope.correlation = function() {
-            AnalyserService.correlation($scope.first_dataset.split(',').map(Number),
-                                        $scope.second_dataset.split(',').map(Number))
+            AnalyserService.correlation(
+                    $scope.first_dataset.match(/\d+/g).map(Number),
+                    $scope.second_dataset.match(/\d+/g).map(Number))
                 .then(function(result) {
                     $scope.result = result;
                 });

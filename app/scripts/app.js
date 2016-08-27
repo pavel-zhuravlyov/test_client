@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
+var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
     .config(function($authProvider, $stateProvider, $urlRouterProvider) {
         $authProvider.configure({
-            apiUrl: 'http://localhost:3000/'
+            apiUrl: 'http://localhost:3000/',
+
         });
 
         $urlRouterProvider.otherwise('/');
@@ -48,4 +49,14 @@ angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServi
             $state.go('login');
             return event.preventDefault();
         });
+    })
+    .directive('updateModelOnChange', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                element.bind('change', function () {
+                    scope.readFileTo(attrs.updateModelOnChange);
+                });
+            }
+        };
     });
