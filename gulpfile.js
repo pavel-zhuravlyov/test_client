@@ -2,7 +2,10 @@ var gulp = require('gulp'),
     concat = require('gulp-concat');
 browserSync = require('browser-sync').create();
 
-var css_files = [
+var html_files = [
+        'app/views/**/*'
+    ],
+    css_files = [
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
         'app/style.css'
     ],
@@ -12,6 +15,7 @@ var css_files = [
         'bower_components/angular/angular.js',
         'bower_components/ng-token-auth/dist/ng-token-auth.min.js',
         'bower_components/angular-cookie/angular-cookie.min.js',
+        'bower_components/ui-router/release/angular-ui-router.min.js',
         'app/app.js'
     ];
 
@@ -22,7 +26,7 @@ gulp.task('server', function() {
             baseDir: 'public'
         }
     });
-    gulp.watch('app/index.html', ['html']).on('change', browserSync.reload);
+    gulp.watch(html_files, ['html']).on('change', browserSync.reload);
     gulp.watch(css_files, ['styles']).on('change', browserSync.reload);
     gulp.watch(js_files, ['scripts']).on('change', browserSync.reload);
 });
@@ -41,7 +45,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('html', function() {
-    gulp.src('app/index.html')
+    gulp.src(html_files)
         .pipe(gulp.dest('public'));
 });
 
