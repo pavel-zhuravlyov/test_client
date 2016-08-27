@@ -7,7 +7,7 @@ var html_files = [
     ],
     css_files = [
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'app/style.css'
+        'app/styles/**/*'
     ],
     js_files = [
         'bower_components/jquery/dist/jquery.min.js',
@@ -16,7 +16,7 @@ var html_files = [
         'bower_components/ng-token-auth/dist/ng-token-auth.min.js',
         'bower_components/angular-cookie/angular-cookie.min.js',
         'bower_components/ui-router/release/angular-ui-router.min.js',
-        'app/app.js'
+        'app/scripts/**/*'
     ];
 
 

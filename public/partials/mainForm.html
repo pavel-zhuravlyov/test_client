@@ -6,8 +6,8 @@
           <div class="col-md-6">
             <form ng-submit="analyse()">
               <div class="form-group">
-                <label for="first_dataset">First dataset:</label>
-                <textarea rows="5" class="form-control" id="first_dataset" ng-model="first_dataset"></textarea>
+                <label>First dataset:</label>
+                <textarea rows="5" class="form-control" ng-model="first_dataset"></textarea>
                 <br>
                 <input type="submit" class="btn btn-default" value="Analyse" />
               </div>
@@ -16,18 +16,29 @@
           <div class="col-md-6">
             <form ng-submit="correlation()">
               <div class="form-group">
-                <label for="second_dataset">Second dataset:</label>
-                <textarea rows="5" class="form-control" id="second_dataset" ng-model="second_dataset"></textarea>
+                <label>Second dataset:</label>
+                <textarea rows="5" class="form-control" ng-model="second_dataset"></textarea>
                 <br>
                 <input type="submit" class="btn btn-default" value="Correlation" />
               </div>
             </form>
           </div>
         </div>
+
+        
+
         <div class="text-center">
-          <ul ng-repeat="(k, v) in result">
-            <li> {{k}}: {{v}}</li>
-          </ul>
+          <table class="table">
+            <tr ng-repeat="(k, v) in result">
+              <td>
+                {{k}}
+              </td>
+              <td>
+                {{v}}
+              </td>
+            </tr>
+          </table>
+
         </div>
       </div>
     </div>

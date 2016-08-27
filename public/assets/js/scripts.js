@@ -30736,10 +30736,10 @@ angular.module("ivpusic.cookie",["ipCookie"]),angular.module("ipCookie",["ng"]).
 a.get("$state.runtime").autoinject&&a.get("$state")}]),w.$inject=[],b.module("ui.router.state").provider("$view",w),b.module("ui.router.state").provider("$uiViewScroll",x),y.$inject=["$state","$injector","$uiViewScroll","$interpolate","$q"],z.$inject=["$compile","$controller","$state","$interpolate"],b.module("ui.router.state").directive("uiView",y),b.module("ui.router.state").directive("uiView",z),G.$inject=["$state","$timeout"],H.$inject=["$state","$timeout"],I.$inject=["$state","$stateParams","$interpolate"],b.module("ui.router.state").directive("uiSref",G).directive("uiSrefActive",I).directive("uiSrefActiveEq",I).directive("uiState",H),J.$inject=["$state"],K.$inject=["$state"],b.module("ui.router.state").filter("isState",J).filter("includedByState",K)}(window,window.angular);
 'use strict';
 
-var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers'])
+angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
     .config(function($authProvider, $stateProvider, $urlRouterProvider) {
         $authProvider.configure({
-            apiUrl: 'http://localhost:3000'
+            apiUrl: 'http://localhost:3000/'
         });
 
         $urlRouterProvider.otherwise('/');
@@ -30780,63 +30780,85 @@ var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'myController
             return event.preventDefault();
         });
 
-
         $rootScope.$on('auth:logout-success', function(event) {
             $state.go('login');
             return event.preventDefault();
         });
     });
 
+'use strict';
 
-var myControllers = angular.module('myControllers', []);
+angular.module('myControllers', [])
+    .controller('authController', function($scope) {
+        $scope.handleLoginBtnClick = function() {
+            $auth.submitLogin($scope.loginForm)
+                .then(function(resp) {})
+                .catch(function(resp) {
+                    $scope.error = 'Invalid login or password!';
+                });
+        };
 
-myControllers.controller('authController', function($scope) {
-    $scope.handleLoginBtnClick = function() {
-        $auth.submitLogin($scope.loginForm)
-            .then(function(resp) {})
-            .catch(function(resp) {});
-    };
+        $scope.handleRegBtnClick = function() {
+            $auth.submitRegistration($scope.registrationForm)
+                .then(function(resp) {})
+                .catch(function(resp) {});
+        };
 
-    $scope.handleRegBtnClick = function() {
-        $auth.submitRegistration($scope.registrationForm)
-            .then(function(resp) {})
-            .catch(function(resp) {});
-    };
+        $scope.handleSignOutBtnClick = function() {
+            $auth.signOut()
+                .then(function(resp) {})
+                .catch(function(resp) {});
+        };
+    })
+    .controller('analyserController', function($scope, AnalyserService) {
+        $scope.analyse = function() {
+            AnalyserService.analyse($scope.first_dataset.split(',').map(Number))
+                .then(function(result) {
+                    $scope.result = result;
+                });
+        };
 
-    $scope.handleSignOutBtnClick = function() {
-        $auth.signOut()
-            .then(function(resp) {})
-            .catch(function(resp) {});
-    };
-});
+        $scope.correlation = function() {
+            AnalyserService.correlation($scope.first_dataset.split(',').map(Number),
+                                        $scope.second_dataset.split(',').map(Number))
+                .then(function(result) {
+                    $scope.result = result;
+                });
+        };
 
-myControllers.controller('analyserController', function($scope, $http, $auth) {
-    $scope.analyse = function() {
-        var dataset = $scope.first_dataset.split(',').map(Number);
-        $http({
-            method: 'POST',
-            url: 'http://localhost:3000/analyser/analyse',
-            data: {
-                'dataset': dataset
+    });
+
+'use strict';
+
+angular.module('myServices', [])
+    .factory("AnalyserService", function($http) {
+        return {
+            analyse: function(dataset) {
+                return $http({
+                    method: 'POST',
+                    url: 'http://localhost:3000/analyser/analyse',
+                    data: {
+                        'dataset': dataset
+                    },
+                }).then(function(response) {
+                    return response.data;
+                }, function(response) {
+                    return null;
+                });
             },
-        }).then(function successCallback(response) {
-            $scope.result = response.data;
-        }, function errorCallback(response) {});
-    };
-
-    $scope.correlation = function() {
-        var first_dataset = $scope.first_dataset.split(',').map(Number);
-        var second_dataset = $scope.second_dataset.split(',').map(Number);
-        $http({
-            method: 'POST',
-            url: 'http://localhost:3000/analyser/correlation',
-            data: {
-                'first_dataset': first_dataset,
-                'second_dataset': second_dataset
-            },
-        }).then(function successCallback(response) {
-            $scope.result = response.data;
-        }, function errorCallback(response) {});
-    };
-
-});
+            correlation: function(first_dataset, second_dataset) {
+                return $http({
+                    method: 'POST',
+                    url: 'http://localhost:3000/analyser/correlation',
+                    data: {
+                        'first_dataset': first_dataset,
+                        'second_dataset': second_dataset
+                    },
+                }).then(function(response) {
+                    return response.data;
+                }, function(response) {
+                    return null;
+                });
+            }
+        };
+    });
