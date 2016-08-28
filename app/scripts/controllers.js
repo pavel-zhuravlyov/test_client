@@ -3,11 +3,17 @@
 angular.module('myControllers', [])
     .controller('authController', function($scope, $auth) {
         $scope.handleLoginBtnClick = function(loginForm) {
-            $auth.submitLogin(loginForm);
+            $scope.loginErrors = []
+            $auth.submitLogin(loginForm).catch(function(response) {
+                $scope.loginErrors = response.errors
+            });
         };
 
         $scope.handleRegBtnClick = function(registrationForm) {
-            $auth.submitRegistration(registrationForm);
+            $scope.regErrors = []
+            $auth.submitRegistration(registrationForm).catch(function(response) {
+                $scope.regErrors = response.data.errors.full_messages;
+            })
         };
 
         $scope.handleSignOutBtnClick = function() {
@@ -25,20 +31,53 @@ angular.module('myControllers', [])
             reader.readAsText(event.target.files[0]);
         };
 
+        var parseDataset = function(data) {
+            var dataset = [];
+            if (data) {
+                dataset = data.match(/\d+/g).map(Number);
+                if (dataset.length > 0) {
+                    return dataset;
+                } else {
+                    return null;
+                }
+            } else {
+                return null
+            };
+        };
+
         $scope.analyse = function() {
-            AnalyserService.analyse($scope.first_dataset.match(/\d+/g).map(Number))
-                .then(function(result) {
-                    $scope.result = result;
-                });
+            var dataset = parseDataset($scope.first_dataset);
+            $scope.result = {};
+            if (dataset) {
+                $scope.first_dataset = dataset.join(', ');
+                AnalyserService.analyse(dataset)
+                    .then(function(result) {
+                        $scope.result = result;
+                    }, function(result) {
+                        scope.dataErrors = result.errors;
+                    });
+            } else {
+                $scope.dataErrors = ['Invalid data'];
+            };
         };
 
         $scope.correlation = function() {
-            AnalyserService.correlation(
-                    $scope.first_dataset.match(/\d+/g).map(Number),
-                    $scope.second_dataset.match(/\d+/g).map(Number))
-                .then(function(result) {
-                    $scope.result = result;
-                });
+            var first_dataset = parseDataset($scope.first_dataset);
+            var second_dataset = parseDataset($scope.second_dataset);
+            $scope.result = {};
+            if (first_dataset && second_dataset) {
+                $scope.first_dataset = first_dataset.join(', ');
+                $scope.second_dataset = second_dataset.join(', ');
+                AnalyserService.correlation(
+                        first_dataset,
+                        second_dataset)
+                    .then(function(result) {
+                        $scope.result = result;
+                    }, function(result) {
+                        scope.dataErrors = result.errors;
+                    });
+            } else {
+                $scope.dataErrors = ['Invalid data'];
+            };
         };
-
     });

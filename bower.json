@@ -11,7 +11,6 @@
     "ui-router": "0.3.1",
     "ng-token-auth": "*",
     "angular-cookie": "*",
-    "ipCookie": "*"
   },
   "homepage": "",
   "ignore": [

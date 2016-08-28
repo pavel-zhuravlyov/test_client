@@ -34,6 +34,11 @@
         </div>
 
         <div class="text-center">
+          <div class="text-danger">
+            <p ng-repeat="e in dataErrors">
+              {{e}}
+            </p>
+          </div>
           <table class="table">
             <tr ng-repeat="(k, v) in result">
               <td>
