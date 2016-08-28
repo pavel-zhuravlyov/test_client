@@ -1,6 +1,7 @@
-var gulp = require('gulp'),
-    concat = require('gulp-concat');
-browserSync = require('browser-sync').create();
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var browserSync = require('browser-sync').create();
+var deploy = require('gulp-gh-pages');
 
 var html_files = [
         'app/views/**/*'
@@ -51,3 +52,8 @@ gulp.task('html', function() {
 
 gulp.task('default', ['html', 'styles', 'scripts']);
 gulp.task('serve', ['default', 'server']);
+
+gulp.task('deploy', function() {
+    return gulp.src("./public/**/*")
+        .pipe(deploy());
+});

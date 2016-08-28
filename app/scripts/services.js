@@ -6,7 +6,7 @@ angular.module('myServices', [])
             analyse: function(dataset) {
                 return $http({
                     method: 'POST',
-                    url: 'http://localhost:3000/analyser/analyse',
+                    url: 'https://hidden-peak-13085.herokuapp.com/analyser/analyse',
                     data: {
                         'dataset': dataset
                     },
@@ -19,7 +19,7 @@ angular.module('myServices', [])
             correlation: function(first_dataset, second_dataset) {
                 return $http({
                     method: 'POST',
-                    url: 'http://localhost:3000/analyser/correlation',
+                    url: 'https://hidden-peak-13085.herokuapp.com/analyser/correlation',
                     data: {
                         'first_dataset': first_dataset,
                         'second_dataset': second_dataset

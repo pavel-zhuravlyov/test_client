@@ -18,9 +18,9 @@
       </div>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">{{user.email}}</a></li>
-        <li ng-show="!user.signedIn"><a href="#" ui-sref="login">Sign in</a></li>
-        <li ng-show="!user.signedIn"><a href="#" ui-sref="register">Sign up</a></li>
-        <li ng-show="user.signedIn"><a href="#" ng-click="handleSignOutBtnClick()">Sign out</a></li>
+        <li ng-show="!user.signedIn"><a href="#/login">Sign in</a></li>
+        <li ng-show="!user.signedIn"><a href="#/register">Sign up</a></li>
+        <li ng-show="user.signedIn"><a ng-click="handleSignOutBtnClick()">Sign out</a></li>
       </ul>
     </div>
   </nav>

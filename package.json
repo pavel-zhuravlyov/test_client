@@ -6,7 +6,14 @@
     "bower": "^1.3.1",
     "browser-sync": "^2.14.0",
     "gulp": "*",
-    "gulp-concat": "^2.6.0"
+    "gulp-concat": "^2.6.0",
+    "gulp-gh-pages": "*"
   },
-  "author": ""
+  "author": "",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "devDependencies": {
+    "gulp-gh-pages": "^0.5.4"
+  }
 }

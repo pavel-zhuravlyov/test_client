@@ -9,15 +9,16 @@ angular.module('myControllers', [])
             });
         };
 
+        $scope.handleSignOutBtnClick = function() {
+            $auth.signOut();
+        };
+    })
+    .controller('registrationController', function($scope, $auth) {
         $scope.handleRegBtnClick = function(registrationForm) {
-            $scope.regErrors = []
+            $scope.regErrors = [];
             $auth.submitRegistration(registrationForm).catch(function(response) {
                 $scope.regErrors = response.data.errors.full_messages;
             })
-        };
-
-        $scope.handleSignOutBtnClick = function() {
-            $auth.signOut();
         };
     })
     .controller('analyserController', function($scope, AnalyserService) {
