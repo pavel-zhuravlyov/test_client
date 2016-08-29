@@ -1,7 +1,16 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var browserSync = require('browser-sync').create();
-var deploy = require('gulp-gh-pages');
+var ENV = process.env.APP_ENV || 'development';
+
+if (ENV === 'development') {
+  require('dotenv').load();
+}
+
+var gulp = require('gulp'),
+    concat = require('gulp-concat'),
+    browserSync = require('browser-sync').create(),
+    deploy = require('gulp-gh-pages'),
+    ngConfig = require('gulp-ng-config'),
+    fs = require('fs'),
+    config = require('./config.js');
 
 var html_files = [
         'app/views/**/*'
@@ -19,7 +28,6 @@ var html_files = [
         'bower_components/ui-router/release/angular-ui-router.min.js',
         'app/scripts/**/*'
     ];
-
 
 gulp.task('server', function() {
     browserSync.init({
@@ -50,7 +58,18 @@ gulp.task('html', function() {
         .pipe(gulp.dest('public'));
 });
 
-gulp.task('default', ['html', 'styles', 'scripts']);
+gulp.task('config', function() {
+    fs.writeFileSync('./config.json',
+        JSON.stringify(config[ENV]));
+    gulp.src('./config.json')
+        .pipe(
+            ngConfig('config')
+        )
+        .pipe(gulp.dest('./app/scripts/'))
+});
+
+gulp.task('default', ['html', 'styles', 'scripts', 'config']);
+
 gulp.task('serve', ['default', 'server']);
 
 gulp.task('deploy', function() {

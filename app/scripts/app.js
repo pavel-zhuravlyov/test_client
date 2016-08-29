@@ -1,9 +1,9 @@
 'use strict';
 
-var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'myControllers', 'myServices'])
-    .config(function($authProvider, $stateProvider, $urlRouterProvider) {
+var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'config' , 'myControllers', 'myServices'])
+    .config(function($authProvider, $stateProvider, $urlRouterProvider, ENV_VARS) {
         $authProvider.configure({
-            apiUrl: 'https://hidden-peak-13085.herokuapp.com',
+            apiUrl: ENV_VARS.apiUrl,
         });
 
         $urlRouterProvider.otherwise('/');
