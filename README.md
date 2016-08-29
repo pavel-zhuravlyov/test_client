@@ -12,5 +12,6 @@ You can also use it on your local machine.
     $ gulp serve
 
 Now you can access app at [http://localhost:3010/](http://localhost:3010/)
+
 To specify API url create file '.env' in applcation root and add line API_URL=*your_url*.
-For example: API_URL=https://dataset-analyser.herokuapp.com. Then run *gulp serve* task.
+For example: API_URL=https://dataset-analyser.herokuapp.com. Then run *gulp config* task.
