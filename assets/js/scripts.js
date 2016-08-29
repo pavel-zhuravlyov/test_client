@@ -30854,6 +30854,7 @@ angular.module('myControllers', [])
 
     $scope.analyse = function() {
       var dataset = parseDataset($scope.first_dataset);
+      $scope.second_dataset = '';
       $scope.result = {};
       if (dataset) {
         $scope.first_dataset = dataset.join(', ');
