@@ -30842,7 +30842,7 @@ angular.module('myControllers', [])
       var dataset = [];
       if (data) {
         dataset = data.match(/\d+/g);
-        if (dataset && dataset.length > 0) {
+        if (dataset && dataset.length > 1) {
           return dataset.map(Number);
         } else {
           return null;
