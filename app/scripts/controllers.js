@@ -35,9 +35,9 @@ angular.module('myControllers', [])
     var parseDataset = function(data) {
       var dataset = [];
       if (data) {
-        dataset = data.match(/\d+/g).map(Number);
-        if (dataset.length > 0) {
-          return dataset;
+        dataset = data.match(/\d+/g);
+        if (dataset && dataset.length > 0) {
+          return dataset.map(Number);
         } else {
           return null;
         }
