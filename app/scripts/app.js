@@ -48,6 +48,11 @@ var myApp = angular.module('myApp', ['ng-token-auth', 'ui.router', 'config' , 'm
             $state.go('login');
             return event.preventDefault();
         });
+
+        $rootScope.$on('auth:registration-email-success', function(event) {
+            $state.go('main');
+            return event.preventDefault();
+        });
     })
     .directive('updateModelOnChange', function() {
         return {
