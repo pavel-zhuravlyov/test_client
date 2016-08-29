@@ -51,7 +51,7 @@ angular.module('myControllers', [])
       $scope.result = {};
       if (dataset) {
         $scope.first_dataset = dataset.join(', ');
-        $scope.first_dataset = '';
+        $scope.second_dataset = '';
         AnalyserService.analyse(dataset)
           .then(function(result) {
             $scope.result = result;
