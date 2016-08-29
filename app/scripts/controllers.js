@@ -54,9 +54,9 @@ angular.module('myControllers', [])
         AnalyserService.analyse(dataset)
           .then(function(result) {
             $scope.result = result;
-            scope.dataErrors = [];
+            $scope.dataErrors = [];
           }, function(result) {
-            scope.dataErrors = result.errors;
+            $scope.dataErrors = result.errors;
           });
       } else {
         $scope.dataErrors = ['Invalid data'];
@@ -74,10 +74,10 @@ angular.module('myControllers', [])
             first_dataset,
             second_dataset)
           .then(function(result) {
-            scope.dataErrors = [];
+            $scope.dataErrors = [];
             $scope.result = result;
           }, function(result) {
-            scope.dataErrors = result.errors;
+            $scope.dataErrors = result.errors;
           });
       } else {
         $scope.dataErrors = ['Invalid data'];
