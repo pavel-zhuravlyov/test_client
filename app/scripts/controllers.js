@@ -50,14 +50,12 @@ angular.module('myControllers', [])
       var dataset = parseDataset($scope.first_dataset);
       $scope.second_dataset = '';
       $scope.result = {};
+      $scope.dataErrors = [];
       if (dataset) {
         $scope.first_dataset = dataset.join(', ');
         AnalyserService.analyse(dataset)
           .then(function(result) {
             $scope.result = result;
-            $scope.dataErrors = [];
-          }, function(result) {
-            $scope.dataErrors = result.errors;
           });
       } else {
         $scope.dataErrors = ['Invalid data'];
@@ -68,18 +66,21 @@ angular.module('myControllers', [])
       var first_dataset = parseDataset($scope.first_dataset);
       var second_dataset = parseDataset($scope.second_dataset);
       $scope.result = {};
+      $scope.dataErrors = [];
       if (first_dataset && second_dataset) {
         $scope.first_dataset = first_dataset.join(', ');
         $scope.second_dataset = second_dataset.join(', ');
-        AnalyserService.correlation(
-            first_dataset,
-            second_dataset)
-          .then(function(result) {
-            $scope.dataErrors = [];
-            $scope.result = result;
-          }, function(result) {
-            $scope.dataErrors = result.errors;
-          });
+        if (first_dataset.length == second_dataset.length) {
+          AnalyserService.correlation(
+              first_dataset,
+              second_dataset)
+            .then(function(result) {
+              $scope.result = result;
+            });
+        } else {
+          $scope.dataErrors = ['Invalid data'];
+        }
+
       } else {
         $scope.dataErrors = ['Invalid data'];
       };
