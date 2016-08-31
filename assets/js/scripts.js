@@ -30809,9 +30809,9 @@ angular.module("config", [])
 angular.module('myControllers', [])
   .controller('authController', function($scope, $auth) {
     $scope.handleLoginBtnClick = function(loginForm) {
-      $scope.loginErrors = []
+      $scope.errors = []
       $auth.submitLogin(loginForm).catch(function(response) {
-        $scope.loginErrors = response.errors
+        $scope.errors = response.errors
       });
     };
 
@@ -30821,9 +30821,9 @@ angular.module('myControllers', [])
   })
   .controller('registrationController', function($scope, $auth) {
     $scope.handleRegBtnClick = function(registrationForm) {
-      $scope.regErrors = [];
+      $scope.errors = [];
       $auth.submitRegistration(registrationForm).catch(function(response) {
-        $scope.regErrors = response.data.errors.full_messages;
+        $scope.errors = response.data.errors.full_messages;
       })
     };
   })
@@ -30839,9 +30839,8 @@ angular.module('myControllers', [])
     };
 
     var parseDataset = function(data) {
-      var dataset = [];
       if (data) {
-        dataset = data.match(/\d+/g);
+        var dataset = data.match(/\d+/g);
         if (dataset && dataset.length > 1) {
           return dataset.map(Number);
         } else {
@@ -30855,39 +30854,40 @@ angular.module('myControllers', [])
     $scope.analyse = function() {
       var dataset = parseDataset($scope.first_dataset);
       $scope.second_dataset = '';
+
       $scope.result = {};
+      $scope.errors = [];
+
       if (dataset) {
         $scope.first_dataset = dataset.join(', ');
         AnalyserService.analyse(dataset)
-          .then(function(result) {
-            $scope.result = result;
-            $scope.dataErrors = [];
-          }, function(result) {
-            $scope.dataErrors = result.errors;
+          .then(function(response) {
+            $scope.result = response.result;
+            $scope.errors = response.errors;
           });
       } else {
-        $scope.dataErrors = ['Invalid data'];
+        $scope.errors = ['Invalid data'];
       };
     };
 
     $scope.correlation = function() {
       var first_dataset = parseDataset($scope.first_dataset);
       var second_dataset = parseDataset($scope.second_dataset);
+
       $scope.result = {};
-      if (first_dataset && second_dataset) {
+      $scope.errors = [];
+
+      if (first_dataset && second_dataset && first_dataset.length == second_dataset.length) {
         $scope.first_dataset = first_dataset.join(', ');
         $scope.second_dataset = second_dataset.join(', ');
-        AnalyserService.correlation(
-            first_dataset,
-            second_dataset)
-          .then(function(result) {
-            $scope.dataErrors = [];
-            $scope.result = result;
-          }, function(result) {
-            $scope.dataErrors = result.errors;
+
+        AnalyserService.correlation(first_dataset, second_dataset)
+          .then(function(response) {
+            $scope.result = response.result;
+            $scope.errors = response.errors;
           });
       } else {
-        $scope.dataErrors = ['Invalid data'];
+        $scope.errors = ['Invalid data'];
       };
     };
   });
@@ -30904,10 +30904,10 @@ angular.module('myServices', [])
           data: {
             'dataset': dataset
           },
-        }).then(function(response) {
-          return response.data;
-        }, function(response) {
-          return null;
+        }).then(function onFulfilled(response) {
+          return { result: response.data };
+        }, function onRejected(response) {
+          return { errors: response.data.errors };
         });
       },
       correlation: function(first_dataset, second_dataset) {
@@ -30918,10 +30918,10 @@ angular.module('myServices', [])
             'first_dataset': first_dataset,
             'second_dataset': second_dataset
           },
-        }).then(function(response) {
-          return response.data;
-        }, function(response) {
-          return null;
+        }).then(function onFulfilled(response) {
+          return { result: response.data };
+        }, function onRejected(response) {
+          return { errors: response.data.errors };
         });
       }
     };
