@@ -10,10 +10,10 @@ angular.module('myServices', [])
           data: {
             'dataset': dataset
           },
-        }).then(function(response) {
-          return response.data;
-        }, function(response) {
-          return null;
+        }).then(function onFulfilled(response) {
+          return { result: response.data };
+        }, function onRejected(response) {
+          return { errors: response.data.errors };
         });
       },
       correlation: function(first_dataset, second_dataset) {
@@ -24,10 +24,10 @@ angular.module('myServices', [])
             'first_dataset': first_dataset,
             'second_dataset': second_dataset
           },
-        }).then(function(response) {
-          return response.data;
-        }, function(response) {
-          return null;
+        }).then(function onFulfilled(response) {
+          return { result: response.data };
+        }, function onRejected(response) {
+          return { errors: response.data.errors };
         });
       }
     };
