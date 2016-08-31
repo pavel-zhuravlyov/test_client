@@ -5,15 +5,15 @@
   <div class="col-md-4 col-md-offset-4">
     <div class="panel panel-default">
       <div class="panel-body">
-        <form name="logForm" ng-controller="authController" ng-submit="logForm.$valid && handleLoginBtnClick(loginForm)">
+        <form name="logForm" ng-controller="authController" ng-submit="logForm.$valid && handleLoginBtnClick(loginForm)" novalidate="">
           <div class="form-group">
             <label class="control-label">Email:</label>
-            <input name="email" class="form-control" ng-model="loginForm.email" />
+            <input name="email" class="form-control" ng-model="loginForm.email" required/>
             <span class="text-danger" ng-show="logForm.$submitted && logForm.email.$pristine">Required field</span>
           </div>
           <div class="form-group">
             <label for="passwordLoginField" class="control-label">Password:</label>
-            <input type="password" name="password" class="form-control" ng-model="loginForm.password"/>
+            <input type="password" name="password" class="form-control" ng-model="loginForm.password" required/>
             <span class="text-danger" ng-show="logForm.$submitted && logForm.password.$pristine">Required field</span>
           </div>
           <div class="text-center">

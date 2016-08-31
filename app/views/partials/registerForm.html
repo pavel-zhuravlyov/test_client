@@ -5,26 +5,26 @@
   <div class="col-md-4 col-md-offset-4">
     <div class="panel panel-default">
       <div class="panel-body">
-        <form name="regForm" ng-controller="registrationController" ng-submit="regForm.$valid && handleRegBtnClick(registrationForm)">
+        <form name="regForm" ng-controller="registrationController" ng-submit="regForm.$valid && handleRegBtnClick(registrationForm)" novalidate>
           <div class="form-group">
             <label class="control-label">Email:</label>
-            <input type="email" name="email" class="form-control" ng-model="registrationForm.email"/>
+            <input type="email" name="email" class="form-control" ng-model="registrationForm.email" required/>
             <span class="text-danger" ng-show="regForm.$submitted && regForm.email.$pristine">Required field</span>
-            <span class="text-danger" ng-show="regForm.$submitted && regForm.email.$invalid" >Email is invalid</span>
+            <span class="text-danger" ng-show="regForm.$submitted && regForm.email.$dirty && regForm.email.$invalid" >Email is invalid</span>
           </div>
 
           <div class="form-group">
             <label class="control-label">Password:</label>
-            <input type="password" name="password" class="form-control" ng-model="registrationForm.password" ng-minlength="8"/>
-            <span class="text-danger" ng-show="regForm.$submitted && regForm.email.$pristine">Required field</span>
-            <span class="text-danger" ng-show="regForm.$submitted && regForm.password.$invalid">At least 8 symbols required</span>
+            <input type="password" name="password" class="form-control" ng-model="registrationForm.password" ng-minlength="8" required/>
+            <span class="text-danger" ng-show="regForm.$submitted && regForm.password.$pristine">Required field</span>
+            <span class="text-danger" ng-show="regForm.$submitted && regForm.password.$dirty && regForm.password.$invalid">At least 8 symbols required</span>
           </div>
 
           <div class="form-group">
             <label class="control-label">Password confirmation:</label>
-            <input type="password" name="password_confirmation" class="form-control" ng-model="registrationForm.password_confirmation" ng-minlength="8" />
-            <span class="text-danger" ng-show="regForm.$submitted && regForm.email.$pristine">Required field</span>
-            <span class="text-danger" ng-show="regForm.$submitted && regForm.password_confirmation.$invalid">At least 8 symbols required</span>
+            <input type="password" name="password_confirmation" class="form-control" ng-model="registrationForm.password_confirmation" ng-minlength="8" required/>
+            <span class="text-danger" ng-show="regForm.$submitted && regForm.password_confirmation.$pristine">Required field</span>
+            <span class="text-danger" ng-show="regForm.$submitted && regForm.password_confirmation.$dirty && regForm.password_confirmation.$invalid">At least 8 symbols required</span>
           </div>
 
           <div class="text-center">
